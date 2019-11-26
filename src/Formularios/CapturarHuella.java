@@ -3,7 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package biohealthy;
+package Formularios;
+
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 
 /**
  *
@@ -15,6 +18,13 @@ public class CapturarHuella extends javax.swing.JFrame {
      * Creates new form CapturarHuella
      */
     public CapturarHuella() {
+        try{
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Imposible modificar el tema visual",
+                           "LookAndFeel invalido",
+                           JOptionPane.ERROR_MESSAGE);
+        }
         initComponents();
     }
 
