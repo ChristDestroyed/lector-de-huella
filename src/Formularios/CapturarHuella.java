@@ -406,23 +406,24 @@ public class CapturarHuella extends javax.swing.JFrame {
     
     public void guardarHuella(){
         ByteArrayInputStream datosHuella = new ByteArrayInputStream(template.serialize());
-        Integer tamañoHuella = template.serialize().length;
+        Integer sizeHuella = template.serialize().length;     
         
         String nombre = JOptionPane.showInputDialog("Nombre: ");
         try{
             Connection c = con.conectar();
             PreparedStatement guardarStmt = c.prepareStatement("INSERT INTO somhue(huenombre, huehuella) values(?,?)");
             guardarStmt.setString(1, nombre);
-            guardarStmt.setBinaryStream(2, datosHuella, tamañoHuella);
+            guardarStmt.setBinaryStream(2, datosHuella, sizeHuella);
+            
             
             guardarStmt.execute();
             guardarStmt.close();
             JOptionPane.showMessageDialog(null, "Huella guardada correctamente");
-            con.desconectar();
+
             BtnGuardar.setEnabled(false);
             BtnVerificar.grabFocus();
         }catch(SQLException e){
-            System.err.println("Error al guardar los datos de la huella");
+            System.err.println("Error al guardar los datos de la huella "+e.getMessage());
         }finally{
             con.desconectar();
         }
@@ -447,17 +448,17 @@ public class CapturarHuella extends javax.swing.JFrame {
                 DPFPVerificationResult result = Verificador.verify(featuresverificacion, getTemplate());
 
                 if(result.isVerified()){
-                    JOptionPane.showMessageDialog(null, "Las huellas capturadas coinciden con las de "+nom,"Verificacion de hulla", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Las huellas capturadas coinciden con las de "+nom,"Verificacion de huella", JOptionPane.INFORMATION_MESSAGE);
                 }
                 else{
-                    JOptionPane.showMessageDialog(null, "No corresponde la huella con "+nom, "Verificacion de hulla",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "No corresponde la huella con "+nom, "Verificacion de huella",JOptionPane.ERROR_MESSAGE);
                 }
             }
             else{
                 JOptionPane.showMessageDialog(null, "No existe un registro de huella para "+nom, "Verificacion de hulla",JOptionPane.ERROR_MESSAGE);
             }
         }catch(SQLException e){
-            System.err.println("Error al verificar los datos de la huella");
+            System.err.println("Error al verificar los datos de la huella"+e.getMessage());
         }finally{
             con.desconectar();
         }
