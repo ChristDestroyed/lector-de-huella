@@ -54,9 +54,7 @@ public class CapturarHuella extends javax.swing.JFrame {
             txtArea.setEditable(false);
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         }catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Imposible modificar el tema visual",
-                           "LookAndFeel invalido",
-                           JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Imposible modificar el tema visual", "LookAndFeel invalido", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -279,7 +277,7 @@ public class CapturarHuella extends javax.swing.JFrame {
         }});}
         @Override public void readerDisconnected(final DPFPReaderStatusEvent e){
         SwingUtilities.invokeLater(new Runnable() {public void run() {
-        EnviarTexto("El sensor de hualla digital esta desactivado");
+        EnviarTexto("El sensor de huella digital esta desactivado");
         }});}
         });
         
@@ -315,7 +313,7 @@ public class CapturarHuella extends javax.swing.JFrame {
     // Comprobar la calidad de la muestra de la huella y lo añade a su reclutador si es bueno
     if (featuresinscripcion != null)
         try{
-        System.out.println("Las Caracteristicas de la Huella han sido creada");
+        System.out.println("Las caracteristicas de la huella han sido creadas");
         Reclutador.addFeatures(featuresinscripcion);// Agregar las caracteristicas de la huella a la plantilla a crear
 
         // Dibuja la huella dactilar capturada.
@@ -335,7 +333,7 @@ public class CapturarHuella extends javax.swing.JFrame {
                case TEMPLATE_STATUS_READY:	// informe de éxito y detiene  la captura de huellas
                stop();
                setTemplate(Reclutador.getTemplate());
-               EnviarTexto("La Plantilla de la Huella ha Sido Creada, ya puede Verificarla o Identificarla");
+               EnviarTexto("La plantilla de la huella ha sido creada, ya puede Verificarla o Identificarla");
                BtnIdentificar.setEnabled(false);
                BtnVerificar.setEnabled(false);
                BtnGuardar.setEnabled(true);
@@ -347,7 +345,7 @@ public class CapturarHuella extends javax.swing.JFrame {
                stop();
                EstadoHuella();
                setTemplate(null);
-               JOptionPane.showMessageDialog(CapturarHuella.this, "La Plantilla de la Huella no pudo ser creada, Repita el Proceso", "Inscripcion de Huellas Dactilares", JOptionPane.ERROR_MESSAGE);
+               JOptionPane.showMessageDialog(CapturarHuella.this, "La plantilla de la huella no pudo ser creada, Repita el proceso", "Inscripcion de Huellas Dactilares", JOptionPane.ERROR_MESSAGE);
                start();
                break;
            }
@@ -375,7 +373,7 @@ public class CapturarHuella extends javax.swing.JFrame {
     }
     
     public void EstadoHuella(){
-        EnviarTexto("Muestra de huellas necesarias para guardar template "+ Reclutador.getFeaturesNeeded());
+        EnviarTexto("Muestra de huellas necesarias para guardar plantilla "+ Reclutador.getFeaturesNeeded());
     }
     
     public void EnviarTexto(String string){
@@ -384,12 +382,12 @@ public class CapturarHuella extends javax.swing.JFrame {
     
     public void start(){
         Lector.startCapture();
-        EnviarTexto("Utilizando el Lector de huella dactilar");
+        EnviarTexto("Usando servicio de huella dactilar");
     }
     
     public void stop(){
         Lector.stopCapture();
-        EnviarTexto("No se esta utilizando el Lector de huella dactilar");
+        EnviarTexto("No se esta usando el servicio de huella dactilar");
     }
     
     public DPFPTemplate getTemplate() {
@@ -418,12 +416,12 @@ public class CapturarHuella extends javax.swing.JFrame {
             
             guardarStmt.execute();
             guardarStmt.close();
-            JOptionPane.showMessageDialog(null, "Huella guardada correctamente");
+            JOptionPane.showMessageDialog(null, "Datos de la huella, guardados correctamente");
 
             BtnGuardar.setEnabled(false);
             BtnVerificar.grabFocus();
         }catch(SQLException e){
-            System.err.println("Error al guardar los datos de la huella "+e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al guardar los datos de la huella "+e.getMessage());
         }finally{
             con.desconectar();
         }
@@ -448,10 +446,10 @@ public class CapturarHuella extends javax.swing.JFrame {
                 DPFPVerificationResult result = Verificador.verify(featuresverificacion, getTemplate());
 
                 if(result.isVerified()){
-                    JOptionPane.showMessageDialog(null, "Las huellas capturadas coinciden con las de "+nom,"Verificacion de huella", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "La huella capturada coinciden con la de "+nom,"Verificacion de huella", JOptionPane.INFORMATION_MESSAGE);
                 }
                 else{
-                    JOptionPane.showMessageDialog(null, "No corresponde la huella con "+nom, "Verificacion de huella",JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "La huella capturada no coincide con la de  "+nom, "Verificacion de huella",JOptionPane.ERROR_MESSAGE);
                 }
             }
             else{
@@ -491,7 +489,7 @@ public class CapturarHuella extends javax.swing.JFrame {
             JOptionPane.showConfirmDialog(null, "No existe ningun registro que coincida con la huella","Verificacion de huella",JOptionPane.ERROR_MESSAGE);
             setTemplate(null);
         }catch (SQLException e){
-            System.err.println("Error al identificar la huella dactilar"+e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al identificar la huella dactilar"+e.getMessage());
         }finally{
             con.desconectar();
         }

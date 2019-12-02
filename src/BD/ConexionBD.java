@@ -25,7 +25,7 @@ public class ConexionBD {
             conn = DriverManager.getConnection(ruta+servidor+db, user, pass);
             
             if(conn!=null){
-                System.out.println("Coneccion a base de datos lista...");
+                JOptionPane.showMessageDialog(null, "Coneccion a base de datos lista...");
             }
             else if(conn==null){
                 throw new SQLException();
@@ -43,6 +43,6 @@ public class ConexionBD {
     
     public void desconectar(){
         conn = null;
-        System.out.println("Desconexion de la base de datos lista...");
+        JOptionPane.showMessageDialog(null, "Desconexion de la base de datos lista...");
     }
 }
