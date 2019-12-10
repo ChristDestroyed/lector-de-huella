@@ -132,10 +132,7 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace pref="164" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="BtnIdentificar" max="32767" attributes="0"/>
-                      <Component id="BtnVerificar" min="-2" pref="97" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="BtnVerificar" min="-2" pref="97" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="222" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="BtnGuardar" max="32767" attributes="0"/>
@@ -154,10 +151,7 @@
                       <Component id="BtnGuardar" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="39" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="BtnIdentificar" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="BtnSalir" alignment="3" min="-2" max="-2" attributes="0"/>
-                  </Group>
+                  <Component id="BtnSalir" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="35" max="-2" attributes="0"/>
               </Group>
           </Group>
@@ -178,14 +172,6 @@
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnGuardarActionPerformed"/>
-          </Events>
-        </Component>
-        <Component class="javax.swing.JButton" name="BtnIdentificar">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="IDENTIFICAR"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="BtnIdentificarActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JButton" name="BtnSalir">

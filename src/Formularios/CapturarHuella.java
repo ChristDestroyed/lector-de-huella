@@ -78,7 +78,6 @@ public class CapturarHuella extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         BtnVerificar = new javax.swing.JButton();
         BtnGuardar = new javax.swing.JButton();
-        BtnIdentificar = new javax.swing.JButton();
         BtnSalir = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtArea = new javax.swing.JTextArea();
@@ -132,13 +131,6 @@ public class CapturarHuella extends javax.swing.JFrame {
             }
         });
 
-        BtnIdentificar.setText("IDENTIFICAR");
-        BtnIdentificar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnIdentificarActionPerformed(evt);
-            }
-        });
-
         BtnSalir.setText("SALIR");
         BtnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -152,9 +144,7 @@ public class CapturarHuella extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(164, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(BtnIdentificar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(BtnVerificar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(BtnVerificar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(222, 222, 222)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(BtnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -169,9 +159,7 @@ public class CapturarHuella extends javax.swing.JFrame {
                     .addComponent(BtnVerificar, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(BtnGuardar))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(BtnIdentificar)
-                    .addComponent(BtnSalir))
+                .addComponent(BtnSalir)
                 .addGap(35, 35, 35))
         );
 
@@ -218,7 +206,7 @@ public class CapturarHuella extends javax.swing.JFrame {
         start();
         EstadoHuella();
         BtnGuardar.setEnabled(false);
-        BtnIdentificar.setEnabled(false);
+        
         BtnVerificar.setEnabled(false);
         BtnSalir.grabFocus();
     }//GEN-LAST:event_formWindowOpened
@@ -242,16 +230,6 @@ public class CapturarHuella extends javax.swing.JFrame {
         verificarHuella(nombre);
         Reclutador.clear();
     }//GEN-LAST:event_BtnVerificarActionPerformed
-
-    private void BtnIdentificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnIdentificarActionPerformed
-        // TODO add your handling code here:
-        try{
-            identificarHuella();
-            Reclutador.clear();
-        }catch(IOException ex){
-            Logger.getLogger(CapturarHuella.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }//GEN-LAST:event_BtnIdentificarActionPerformed
 
     private DPFPCapture Lector = DPFPGlobal.getCaptureFactory().createCapture();
     private DPFPEnrollment Reclutador = DPFPGlobal.getEnrollmentFactory().createEnrollment();
@@ -282,15 +260,19 @@ public class CapturarHuella extends javax.swing.JFrame {
         });
         
         Lector.addSensorListener(new DPFPSensorAdapter(){
-        @Override public void fingerTouched(final DPFPSensorEvent e){
-        SwingUtilities.invokeLater(new Runnable() {public void run() {
-        EnviarTexto("El dedo ha sido colocado sobre el lector de huella");
+        @Override public void fingerTouched(final DPFPSensorEvent e){SwingUtilities.invokeLater(new Runnable() {public void run() {EnviarTexto("El dedo ha sido colocado sobre el lector de huella");
         }});}
-        @Override public void fingerGone(final DPFPSensorEvent e){
-        SwingUtilities.invokeLater(new Runnable() {public void run() {
-        EnviarTexto("El dedo ha sido quitado del lector de huella");
-        }});}
+        @Override public void fingerGone(final DPFPSensorEvent e){SwingUtilities.invokeLater(new Runnable() {public void run() {EnviarTexto("El dedo ha sido quitado del lector de huella");
+        }});
+        try{
+            identificarHuella();
+            Reclutador.clear();
+        }catch(IOException ex){
+            Logger.getLogger(CapturarHuella.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        }
         });
+        
         
         Lector.addErrorListener(new DPFPErrorAdapter(){
         public void errorReader(final DPFPErrorEvent e){
@@ -321,7 +303,6 @@ public class CapturarHuella extends javax.swing.JFrame {
         DibujarHuella(image);
 
         BtnVerificar.setEnabled(true);
-        BtnIdentificar.setEnabled(true);
 
         }catch (DPFPImageQualityException ex) {
         System.err.println("Error: "+ex.getMessage());
@@ -334,7 +315,7 @@ public class CapturarHuella extends javax.swing.JFrame {
                stop();
                setTemplate(Reclutador.getTemplate());
                EnviarTexto("La plantilla de la huella ha sido creada, ya puede Verificarla o Identificarla");
-               BtnIdentificar.setEnabled(false);
+
                BtnVerificar.setEnabled(false);
                BtnGuardar.setEnabled(true);
                BtnGuardar.grabFocus();
@@ -486,7 +467,6 @@ public class CapturarHuella extends javax.swing.JFrame {
                 }
             }
             
-            JOptionPane.showConfirmDialog(null, "No existe ningun registro que coincida con la huella","Verificacion de huella",JOptionPane.ERROR_MESSAGE);
             setTemplate(null);
         }catch (SQLException e){
             JOptionPane.showMessageDialog(null, "Error al identificar la huella dactilar"+e.getMessage());
@@ -531,7 +511,6 @@ public class CapturarHuella extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton BtnGuardar;
-    private javax.swing.JButton BtnIdentificar;
     private javax.swing.JButton BtnSalir;
     private javax.swing.JButton BtnVerificar;
     private javax.swing.JPanel jPanel1;
