@@ -466,7 +466,7 @@ public class CapturarHuella extends javax.swing.JFrame {
                     return;
                 }
             }
-            
+            JOptionPane.showMessageDialog(null, "No existe ningun registro que coincida con la huella","Verificacion de huella",JOptionPane.ERROR_MESSAGE);
             setTemplate(null);
         }catch (SQLException e){
             JOptionPane.showMessageDialog(null, "Error al identificar la huella dactilar"+e.getMessage());
