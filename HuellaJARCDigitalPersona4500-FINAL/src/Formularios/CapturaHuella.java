@@ -397,8 +397,8 @@ public  void stop(){
 
     public void setTemplate(DPFPTemplate template) {
         DPFPTemplate old = this.template;
-	this.template = template;
-	firePropertyChange(TEMPLATE_PROPERTY, old, template);
+	    this.template = template;
+	    firePropertyChange(TEMPLATE_PROPERTY, old, template);
     }
 
 ConexionBD con=new ConexionBD();
@@ -510,7 +510,7 @@ ConexionBD con=new ConexionBD();
        //crea la imagen de los datos guardado de las huellas guardadas en la base de datos
        JOptionPane.showMessageDialog(null, "Las huella capturada es de "+nombre,"Verificacion de Huella", JOptionPane.INFORMATION_MESSAGE);
        return;
-                               }
+          }
        }
        //Si no encuentra alguna huella correspondiente al nombre lo indica con un mensaje
        JOptionPane.showMessageDialog(null, "No existe ningún registro que coincida con la huella", "Verificacion de Huella", JOptionPane.ERROR_MESSAGE);

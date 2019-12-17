@@ -238,8 +238,9 @@ public class CapturarHuella extends javax.swing.JFrame {
 
 
     public static String TEMPLATE_PROPERTY = "template";
-    
+        
     protected void Iniciar(){
+        
         Lector.addDataListener(new DPFPDataAdapter(){
         @Override public void dataAcquired(final DPFPDataEvent e){
         SwingUtilities.invokeLater(new Runnable() { public void run() {
@@ -260,9 +261,13 @@ public class CapturarHuella extends javax.swing.JFrame {
         });
         
         Lector.addSensorListener(new DPFPSensorAdapter(){
-        @Override public void fingerTouched(final DPFPSensorEvent e){SwingUtilities.invokeLater(new Runnable() {public void run() {EnviarTexto("El dedo ha sido colocado sobre el lector de huella");
+        @Override public void fingerTouched(final DPFPSensorEvent e){
+        SwingUtilities.invokeLater(new Runnable() {public void run() {
+        EnviarTexto("El dedo ha sido colocado sobre el lector de huella");
         }});}
-        @Override public void fingerGone(final DPFPSensorEvent e){SwingUtilities.invokeLater(new Runnable() {public void run() {EnviarTexto("El dedo ha sido quitado del lector de huella");
+        @Override public void fingerGone(final DPFPSensorEvent e){
+        SwingUtilities.invokeLater(new Runnable() {public void run() {
+        EnviarTexto("El dedo ha sido quitado del lector de huella");
         }});
         try{
             identificarHuella();
@@ -272,7 +277,6 @@ public class CapturarHuella extends javax.swing.JFrame {
         }
         }
         });
-        
         
         Lector.addErrorListener(new DPFPErrorAdapter(){
         public void errorReader(final DPFPErrorEvent e){
@@ -295,7 +299,7 @@ public class CapturarHuella extends javax.swing.JFrame {
     // Comprobar la calidad de la muestra de la huella y lo añade a su reclutador si es bueno
     if (featuresinscripcion != null)
         try{
-        System.out.println("Las caracteristicas de la huella han sido creadas");
+        EnviarTexto("Las caracteristicas de la huella han sido creadas");
         Reclutador.addFeatures(featuresinscripcion);// Agregar las caracteristicas de la huella a la plantilla a crear
 
         // Dibuja la huella dactilar capturada.
@@ -305,7 +309,7 @@ public class CapturarHuella extends javax.swing.JFrame {
         BtnVerificar.setEnabled(true);
 
         }catch (DPFPImageQualityException ex) {
-        System.err.println("Error: "+ex.getMessage());
+        EnviarTexto("Error: "+ex.getMessage());
         }finally {
         EstadoHuella();
         // Comprueba si la plantilla se ha creado.
@@ -437,7 +441,7 @@ public class CapturarHuella extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(null, "No existe un registro de huella para "+nom, "Verificacion de hulla",JOptionPane.ERROR_MESSAGE);
             }
         }catch(SQLException e){
-            System.err.println("Error al verificar los datos de la huella"+e.getMessage());
+            EnviarTexto("Error al verificar los datos de la huella"+e.getMessage());
         }finally{
             con.desconectar();
         }
