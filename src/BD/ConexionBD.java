@@ -10,19 +10,13 @@ import javax.swing.JOptionPane;
  * @author 501
  */
 public class ConexionBD {
-    public  String puerto="3306";
-    public  String nomservidor="localhost";
-    public  String db="huellas";
-    public  String user="root";
-    public  String pass="";
     Connection conn=null;
     
     public Connection conectar(){
         try{
-            String ruta="jdbc:mysql://";
-            String servidor=nomservidor+":"+puerto+"/";
-            Class.forName("com.mysql.jdbc.Driver");
-            conn = DriverManager.getConnection(ruta+servidor+db, user, pass);
+            String ruta="jdbc:sqlserver://501-03:1433;databaseName=Huella;user=sa;password=cesde;";
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            conn = DriverManager.getConnection(ruta);
             
             if(conn!=null){
                 JOptionPane.showMessageDialog(null, "Coneccion a base de datos lista...");

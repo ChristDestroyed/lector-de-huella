@@ -1,10 +1,7 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package Formularios;
 
+import BD.ConexionBD;
 import com.digitalpersona.onetouch.DPFPDataPurpose;
 import com.digitalpersona.onetouch.DPFPFeatureSet;
 import com.digitalpersona.onetouch.DPFPGlobal;
@@ -23,32 +20,28 @@ import com.digitalpersona.onetouch.processing.DPFPEnrollment;
 import com.digitalpersona.onetouch.processing.DPFPFeatureExtraction;
 import com.digitalpersona.onetouch.processing.DPFPImageQualityException;
 import com.digitalpersona.onetouch.verification.DPFPVerification;
-import java.awt.Image;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
-import javax.swing.UIManager;
-import BD.ConexionBD;
 import com.digitalpersona.onetouch.verification.DPFPVerificationResult;
-import java.io.ByteArrayInputStream;
+import java.awt.Image;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;  
 
-/**
- *
- * @author Shebas
- */
-public class CapturarHuella extends javax.swing.JFrame {
 
-    /**
-     * Creates new form CapturarHuella
-     */
-    public CapturarHuella() {
+
+public class IdenHuella extends javax.swing.JFrame {
+
+    public IdenHuella() {
         try{
             initComponents();
             txtArea.setEditable(false);
@@ -77,7 +70,6 @@ public class CapturarHuella extends javax.swing.JFrame {
         lblImagenHuella = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         BtnVerificar = new javax.swing.JButton();
-        BtnGuardar = new javax.swing.JButton();
         BtnSalir = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         txtArea = new javax.swing.JTextArea();
@@ -124,13 +116,6 @@ public class CapturarHuella extends javax.swing.JFrame {
             }
         });
 
-        BtnGuardar.setText("GUARDAR");
-        BtnGuardar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                BtnGuardarActionPerformed(evt);
-            }
-        });
-
         BtnSalir.setText("SALIR");
         BtnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -142,25 +127,24 @@ public class CapturarHuella extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(164, Short.MAX_VALUE)
-                .addComponent(BtnVerificar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(222, 222, 222)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(BtnGuardar, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(BtnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(160, 160, 160))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(BtnVerificar, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(312, 312, 312))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(BtnSalir, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(320, 320, 320))))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(BtnVerificar, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(BtnGuardar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addGap(29, 29, 29)
+                .addComponent(BtnVerificar)
+                .addGap(29, 29, 29)
                 .addComponent(BtnSalir)
-                .addGap(35, 35, 35))
+                .addContainerGap(51, Short.MAX_VALUE))
         );
 
         txtArea.setColumns(20);
@@ -205,7 +189,6 @@ public class CapturarHuella extends javax.swing.JFrame {
         Iniciar();
         start();
         EstadoHuella();
-        BtnGuardar.setEnabled(false);
         
         BtnVerificar.setEnabled(false);
         BtnSalir.grabFocus();
@@ -215,14 +198,6 @@ public class CapturarHuella extends javax.swing.JFrame {
         // TODO add your handling code here:
         stop();
     }//GEN-LAST:event_formWindowClosing
-
-    private void BtnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnGuardarActionPerformed
-        // TODO add your handling code here:
-        guardarHuella();
-        Reclutador.clear();
-        lblImagenHuella.setIcon(null);
-        start();
-    }//GEN-LAST:event_BtnGuardarActionPerformed
 
     private void BtnVerificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnVerificarActionPerformed
         // TODO add your handling code here:
@@ -273,7 +248,7 @@ public class CapturarHuella extends javax.swing.JFrame {
             identificarHuella();
             Reclutador.clear();
         }catch(IOException ex){
-            Logger.getLogger(CapturarHuella.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(IdenHuella.class.getName()).log(Level.SEVERE, null, ex);
         }
         }
         });
@@ -321,8 +296,6 @@ public class CapturarHuella extends javax.swing.JFrame {
                EnviarTexto("La plantilla de la huella ha sido creada, ya puede Verificarla o Identificarla");
 
                BtnVerificar.setEnabled(false);
-               BtnGuardar.setEnabled(true);
-               BtnGuardar.grabFocus();
                break;
 
                case TEMPLATE_STATUS_FAILED: // informe de fallas y reiniciar la captura de huellas
@@ -330,7 +303,7 @@ public class CapturarHuella extends javax.swing.JFrame {
                stop();
                EstadoHuella();
                setTemplate(null);
-               JOptionPane.showMessageDialog(CapturarHuella.this, "La plantilla de la huella no pudo ser creada, Repita el proceso", "Inscripcion de Huellas Dactilares", JOptionPane.ERROR_MESSAGE);
+               JOptionPane.showMessageDialog(IdenHuella.this, "La plantilla de la huella no pudo ser creada, Repita el proceso", "Inscripcion de Huellas Dactilares", JOptionPane.ERROR_MESSAGE);
                start();
                break;
            }
@@ -358,7 +331,7 @@ public class CapturarHuella extends javax.swing.JFrame {
     }
     
     public void EstadoHuella(){
-        EnviarTexto("Muestra de huellas necesarias para guardar plantilla "+ Reclutador.getFeaturesNeeded());
+        EnviarTexto("");
     }
     
     public void EnviarTexto(String string){
@@ -386,31 +359,6 @@ public class CapturarHuella extends javax.swing.JFrame {
     }
     
     ConexionBD con = new ConexionBD();
-    
-    public void guardarHuella(){
-        ByteArrayInputStream datosHuella = new ByteArrayInputStream(template.serialize());
-        Integer sizeHuella = template.serialize().length;     
-        
-        String nombre = JOptionPane.showInputDialog("Nombre: ");
-        try{
-            Connection c = con.conectar();
-            PreparedStatement guardarStmt = c.prepareStatement("INSERT INTO somhue(huenombre, huehuella) values(?,?)");
-            guardarStmt.setString(1, nombre);
-            guardarStmt.setBinaryStream(2, datosHuella, sizeHuella);
-            
-            
-            guardarStmt.execute();
-            guardarStmt.close();
-            JOptionPane.showMessageDialog(null, "Datos de la huella, guardados correctamente");
-
-            BtnGuardar.setEnabled(false);
-            BtnVerificar.grabFocus();
-        }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "Error al guardar los datos de la huella "+e.getMessage());
-        }finally{
-            con.desconectar();
-        }
-    }
     
     public void verificarHuella(String nom){
         try{
@@ -451,14 +399,20 @@ public class CapturarHuella extends javax.swing.JFrame {
         try{
             Connection c = con.conectar();
             
-            PreparedStatement identificarStmt = c.prepareStatement("SELECT huenombre,huehuella FROM somhue");
+            PreparedStatement identificarStmt = c.prepareStatement("SELECT ID,huenombre,huehuella FROM somhue");
             ResultSet rs = identificarStmt.executeQuery();
             
             while(rs.next()){
                 
                 byte templateBuffer[] = rs.getBytes("huehuella");
                 String nombre = rs.getString("huenombre");
-                
+                int ID = rs.getInt("ID");
+                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+                LocalDateTime FechaIden = LocalDateTime.now(); 
+                System.out.println(dtf.format(FechaIden)); 
+                  
+                Date sqlDate = new Date(FechaIden.getHour());
+       
                 DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer);
                 
                 setTemplate(referenceTemplate);
@@ -467,13 +421,18 @@ public class CapturarHuella extends javax.swing.JFrame {
                 
                 if(result.isVerified()){
                     JOptionPane.showMessageDialog(null, "La huella capturada es de "+nombre,"Verificacion de huella", JOptionPane.INFORMATION_MESSAGE);
+                    PreparedStatement insertDate = c.prepareStatement("Insert into fecha_iden(FechaIden,ID_1) values(?,?)");
+                    insertDate.setDate(1, sqlDate);
+                    insertDate.setInt(2, ID);
+                    insertDate.execute();
+                    insertDate.close();
                     return;
                 }
             }
             JOptionPane.showMessageDialog(null, "No existe ningun registro que coincida con la huella","Verificacion de huella",JOptionPane.ERROR_MESSAGE);
             setTemplate(null);
         }catch (SQLException e){
-            JOptionPane.showMessageDialog(null, "Error al identificar la huella dactilar"+e.getMessage());
+            JOptionPane.showMessageDialog(null, "Error al identificar la huella dactilar "+e.getMessage());
         }finally{
             con.desconectar();
         }
@@ -495,26 +454,26 @@ public class CapturarHuella extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CapturarHuella.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IdenHuella.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CapturarHuella.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IdenHuella.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CapturarHuella.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IdenHuella.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CapturarHuella.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(IdenHuella.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new CapturarHuella().setVisible(true);
+                new IdenHuella().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton BtnGuardar;
     private javax.swing.JButton BtnSalir;
     private javax.swing.JButton BtnVerificar;
     private javax.swing.JPanel jPanel1;
