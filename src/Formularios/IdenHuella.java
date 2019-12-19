@@ -28,14 +28,15 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
-import java.time.format.DateTimeFormatter;  
-import java.time.LocalDateTime;  
+/*import java.time.format.DateTimeFormatter;  
+import java.time.LocalDateTime;  */
 
 
 
@@ -395,6 +396,8 @@ public class IdenHuella extends javax.swing.JFrame {
         }
     }
     
+    Calendar calendar = Calendar.getInstance();
+    
     public void identificarHuella() throws IOException{
         try{
             Connection c = con.conectar();
@@ -407,11 +410,20 @@ public class IdenHuella extends javax.swing.JFrame {
                 byte templateBuffer[] = rs.getBytes("huehuella");
                 String nombre = rs.getString("huenombre");
                 int ID = rs.getInt("ID");
-                DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+                /*DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss:SSS");  
                 LocalDateTime FechaIden = LocalDateTime.now(); 
                 System.out.println(dtf.format(FechaIden)); 
                   
-                Date sqlDate = new Date(FechaIden.getHour());
+                Date sqlDate = new Date(FechaIden.getHour());*/
+                
+                /*Date sqlDate = new Date(new java.util.Date().getTime());
+                System.out.println(sqlDate); */
+                
+                /*java.sql.Date sqlDate = new java.sql.Date(calendar.getTime().getTime());
+                System.out.println(sqlDate);*/
+                
+                java.sql.Timestamp sqlDate = new java.sql.Timestamp(calendar.getTimeInMillis());
+                System.out.println(sqlDate);
        
                 DPFPTemplate referenceTemplate = DPFPGlobal.getTemplateFactory().createTemplate(templateBuffer);
                 
@@ -422,7 +434,7 @@ public class IdenHuella extends javax.swing.JFrame {
                 if(result.isVerified()){
                     JOptionPane.showMessageDialog(null, "La huella capturada es de "+nombre,"Verificacion de huella", JOptionPane.INFORMATION_MESSAGE);
                     PreparedStatement insertDate = c.prepareStatement("Insert into fecha_iden(FechaIden,ID_1) values(?,?)");
-                    insertDate.setDate(1, sqlDate);
+                    insertDate.setTimestamp(1, sqlDate);
                     insertDate.setInt(2, ID);
                     insertDate.execute();
                     insertDate.close();
